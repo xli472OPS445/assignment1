@@ -33,17 +33,17 @@ def after(date: str) -> str:
     Return the date for the next day of the given date in YYYY-MM-DD format.
     This function has been tested to work for year after 1582
     '''
-'''
-#This is to split the data that seperated by '-' to 3 different parts: year
-month and day, and indicate the day value to be calculated +1
-'''
+    '''
+    #This is to split the data that seperated by '-' to 3 different parts: year
+    month and day, and indicate the day value to be calculated +1
+    '''
     year, mon, day= (int(x) for x in date.split('-'))  
     day += 1  # next day
 
-'''
-The lyear part is to specify whether the input year was a leap year or not,
-because there are 29 days in Feburary in a leap year.
-'''
+    '''
+    The lyear part is to specify whether the input year was a leap year or not,
+    because there are 29 days in Feburary in a leap year.
+    '''
 
     lyear = year % 4
     if lyear == 0:
@@ -59,8 +59,8 @@ because there are 29 days in Feburary in a leap year.
     if lyear == 0:
         leap_flag = True  # this is a leap year
 
-'''
-The mon_dict is to specify the number of days in each month, and if it is a leap year and the month is 2, the number of days will be set to 29 instaed of 28'''
+    '''
+    The mon_dict is to specify the number of days in each month, and if it is a leap year and the month is 2, the number of days will be set to 29 instaed of 28'''
     
     mon_dict= {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
            7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
@@ -69,9 +69,9 @@ The mon_dict is to specify the number of days in each month, and if it is a leap
     else:
         mon_max = mon_dict[mon]
    
-'''
-if the number of days reaches to the max days of a month, the month value will add 1, and if the month calculated 12 already, it will be another year. In this case, the month and day will all set to 1 and start again the calculation.
-'''
+    '''
+    if the number of days reaches to the max days of a month, the month value will add 1, and if the month calculated 12 already, it will be another year. In this case, the month and day will all set to 1 and start again the calculation.
+    '''
  
     if day > mon_max:
         mon += 1
@@ -85,8 +85,36 @@ if the number of days reaches to the max days of a month, the month value will a
 
 
 def before(date: str) -> str:
-    "Returns previous day's date as YYYY-MM-DD"
-    ...
+    year, mon, day= (int(x) for x in date.split('-'))  
+    day -= 1  # the day before
+
+    lyear = year % 4
+    if lyear == 0:
+        leap_flag = True
+    else:
+        leap_flag = False  # this is not a leap year
+
+    lyear = year % 100
+    if lyear == 0:
+        leap_flag = False  # this is not a leap year
+
+    lyear = year % 400
+    if lyear == 0:
+        leap_flag = True  # this is a leap year
+
+    mon_dict= {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+           7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
+    if leap_flag:
+        mon_dict[2] = 29
+ 
+    if day < 1:
+        mon -= 1
+        if mon < 1:
+            year -= 1
+            mon = 12
+        day = mon_dict[mon]  
+    return f"{year}-{mon:02}-{day:02}" 
+
 
 def usage():
     "Print a usage message to the user"
