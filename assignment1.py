@@ -64,13 +64,23 @@ def before(date: str) -> str:
 
 
 def usage():
-    "Print a usage message to the user"
-    print("Usage: " + str(sys.argv[0]) + " YYYY-MM-DD NN")
+    print("Usage: " + str(sys.argv[0]) + " YYYY-MM-DD division")
     sys.exit()
 
 def valid_date(date: str) -> bool:
-    "check validity of date"
-    ...
+    year, mon, day= (int(x) for x in date.split('-'))  
+    
+    if mon > 12 or mon < 1: 
+        print('Error: wrong month entered')
+        print(usage()) 
+        return False 
+  
+    if day > mon_max(mon, year) or day < 0: 
+        print('Error: wrong day entered')
+        print(usage()) 
+        return False
+ 
+    return True
 
 def dbda(start_date: str, step: int) -> str:
     year, mon, day= (int(x) for x in start_date.split('-'))  
@@ -90,7 +100,20 @@ def dbda(start_date: str, step: int) -> str:
         return start_date
 
 if __name__ == "__main__":
-    # process command line arguments
-    # call dbda()
-    # output the result
-    ...
+    if sys.argv != 2 or division_num == 0:
+        print(usage())
+ 
+    input_date = str(sys.argv[1])
+
+    if valid_date(input_date):
+        division_num = int(sys.argv[2])
+        AB_days = round(365 / division_num)
+        print(f'A year divided by {division_num} is {AB_days} days')
+        print(f'The date {AB_days} days ago was {dbda(input_date, -AB_days)}')
+        print(f'The date {AB_days} from now will be {dbda(input_date, AB_days)}')
+    else:
+        print(valid_date(input_date))
+
+
+
+
